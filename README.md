@@ -58,12 +58,13 @@ try {
     // This will throw as we are using the name my_job again
     sch.createJob('my_job', myJob);
 } catch (error) {
-    // This will print 'Name my_job already taken' as the second call to createJob throws
+    // This will print 'Name my_job already taken' as the second
+    //call to createJob throws
     console.log(error.message);
 }
 
-// This will start my_job once per second, since the job takes 3 seconds
-//to run it will fail 2 out of 3 times
+// This will start my_job once per second, since the job takes
+//3 seconds to run it will fail 2 out of 3 times
 setInterval(() => {
     try {
         // Starting the job with two arguments
@@ -85,7 +86,8 @@ setInterval(() => {
 //rejecting arg1 12345
 // ...
 
-// myJob is a simple function that returns a promise that randomly resolves or rejects
+// myJob is a simple function that returns a promise that randomly 
+//resolves or rejects
 function myJob(arg1, arg2) {
     // Will print if the job is started sucessfully
     console.log('running myJob');
