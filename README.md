@@ -1,43 +1,9 @@
-## tnt-scheduler
-
-### Instalation
+## Instalation
 ```
 npm i tnt-scheduler --save
 ```
 
-### Signatures
-```javascript
-    /**
-     * Create a new Schedulable job
-     * 
-     * 
-     * 
-     * @param {string} name The name of your Job
-     * @param {function} executor The executor function, it must return a promise
-     * @param {number} concurrency The number of concurrent instances of the job that might be run
-     */
-    createJob(name, executor, concurrency = 1);
-
-    /**
-     * Remove a Schedulable job from the Scheduler instance
-     * 
-     * @param {string} name The name of your Job
-     */
-    removeJob(name)
-
-    /**
-     * Trigger a Schedulable job
-     * 
-     * @param {string} name The name of your Job
-     * @param {...*} args The arguments that will be passed to your Job executor
-     */
-    startJob(name, ...args)
-}
-
-module.exports = Scheduler;
-```
-
-### Usage:
+## Usage:
 
 Creating a new scheduler:
 ```javascript
@@ -83,7 +49,7 @@ try {
 
 Full example:
 ```javascript
-const Scheduler = require('./index');
+const Scheduler = require('tnt-scheduler');
 let sch = new Scheduler();
 
 try {
@@ -142,4 +108,35 @@ function myJob(arg1, arg2) {
         }, 3000);
     })
 }
+```
+
+## Signatures
+```javascript
+    /**
+     * Create a new Schedulable job
+     * 
+     * @param {string} name The name of your Job
+     * @param {function} executor The executor function, it must return a promise
+     * @param {number} concurrency The number of concurrent instances of the job that might be run
+     * @throws {Error} Throws an Error if the name is already taken
+     */
+    createJob(name, executor, concurrency = 1)
+
+    /**
+     * Remove a Schedulable job from the Scheduler instance
+     * 
+     * @param {string} name The name of your Job
+     * @throws {Error} Throws an Error if there is no Job registered by that name
+     */
+    removeJob(name)
+
+    /**
+     * Trigger a Schedulable job
+     * 
+     * @param {string} name The name of your Job
+     * @param {...*} args The arguments that will be passed to your Job executor
+     * @throws {Error} Throws an Error if there is no Job registered by that name
+     * @throws {Error} Throws an Error if the job is already at max concurrency
+     */
+    startJob(name, ...args)
 ```
