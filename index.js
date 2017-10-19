@@ -3,6 +3,14 @@ class Scheduler {
         this.jobs = {};
     }
 
+    /**
+     * Create a new Schedulable job
+     * 
+     * @param {string} name The name of your Job
+     * @param {function} executor The executor function, it must return a promise
+     * @param {number} concurrency The number of concurrent instances of the job that might be run
+     * @throws {Error} Throws an Error if the name is already taken
+     */
     createJob(name, executor, concurrency = 1) {
         if (this.jobs[name]) {
             throw new Error(`Name ${name} already taken`);
@@ -15,6 +23,12 @@ class Scheduler {
         }
     }
 
+    /**
+     * Remove a Schedulable job from the Scheduler instance
+     * 
+     * @param {string} name The name of your Job
+     * @throws {Error} Throws an Error if there is no Job registered by that name
+     */
     removeJob(name){
         if (!this.jobs[name]) {
             throw new Error(`No job named ${name} found`);
@@ -23,6 +37,14 @@ class Scheduler {
         }
     }
 
+    /**
+     * Trigger a Schedulable job
+     * 
+     * @param {string} name The name of your Job
+     * @param {...*} args The arguments that will be passed to your Job executor
+     * @throws {Error} Throws an Error if there is no Job registered by that name
+     * @throws {Error} Throws an Error if the job is already at max concurrency
+     */
     startJob(name, ...args) {
         if (!this.jobs[name]) {
             throw new Error(`No job named ${name} found`);

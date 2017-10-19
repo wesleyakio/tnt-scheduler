@@ -1,3 +1,88 @@
+## tnt-scheduler
+
+### Instalation
+```
+npm i tnt-scheduler --save
+```
+
+### Signatures
+```javascript
+    /**
+     * Create a new Schedulable job
+     * 
+     * 
+     * 
+     * @param {string} name The name of your Job
+     * @param {function} executor The executor function, it must return a promise
+     * @param {number} concurrency The number of concurrent instances of the job that might be run
+     */
+    createJob(name, executor, concurrency = 1);
+
+    /**
+     * Remove a Schedulable job from the Scheduler instance
+     * 
+     * @param {string} name The name of your Job
+     */
+    removeJob(name)
+
+    /**
+     * Trigger a Schedulable job
+     * 
+     * @param {string} name The name of your Job
+     * @param {...*} args The arguments that will be passed to your Job executor
+     */
+    startJob(name, ...args)
+}
+
+module.exports = Scheduler;
+```
+
+### Usage:
+
+Creating a new scheduler:
+```javascript
+const Scheduler = require('tnt-scheduler');
+let sch = new Scheduler();
+```
+
+Creating a new schedulable job with a concurrency of 1, the job executor is a simple javascript function that **must** return a promise:
+```javascript
+try {
+    sch.createJob('my_job', myJob);
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Creating a new schedulable job with a concurrency of 3, the job executor is a simple javascript function that **must** return a promise.
+```javascript
+try {
+    sch.createJob('my_job', myJob, 3);
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Running your job:
+```javascript
+try {
+    sch.startJob('my_job');
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Passing arguments to your Job:
+```javascript
+try {
+    sch.startJob('my_job', 'arg1', 'arg2', 'argN');
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Full example:
+```javascript
 const Scheduler = require('./index');
 let sch = new Scheduler();
 
@@ -57,3 +142,4 @@ function myJob(arg1, arg2) {
         }, 3000);
     })
 }
+```

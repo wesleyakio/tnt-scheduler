@@ -7,5 +7,19 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Wesley Akio",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesleyakio/tnt-scheduler.git"
+  },
+  "keywords": [
+    "job",
+    "scheduler",
+    "concurrency",
+    "promise"
+  ],
+  "bugs": {
+    "url": "https://github.com/wesleyakio/tnt-scheduler/issues"
+  },
+  "homepage": "https://github.com/wesleyakio/tnt-scheduler#readme"
 }
