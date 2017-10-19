@@ -1,0 +1,11 @@
+{
+  "name": "tnt-scheduler",
+  "version": "1.0.0",
+  "description": "A promise based scheduler with concurrency control",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wesley Akio",
+  "license": "MIT"
+}
