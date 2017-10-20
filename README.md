@@ -234,4 +234,20 @@ function myJob(arg1, arg2) {
      * @throws {Error} Throws an Error if the job is already at max concurrency
      */
     startJob(name, ...args)
+
+    /**
+     * Run your Job periodically
+     * 
+     * @param {string} name The name of your Job
+     * @param {number} interval The interval between run attempts
+     * @param {...*} args The arguments that will be passed to your Job executor
+     */
+    scheduleJob(name, interval, ...args)
+
+    /**
+     * Stop Job's periodic runs
+     * 
+     * @param {string} name The name of your Job
+     */
+    clearSchedule(name)
 ```
