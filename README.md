@@ -1,7 +1,16 @@
+## Purpose
+- Register a Job and set its maximum concurrency;
+- Be able to trigger the job manually many times with the gurarantee that the set concurrency will be respected;
+- Be able to run a job at an interval with the guarantee muiltiple runs wont overlap.
+- (Future) Be able to ensure these guarantees across multiple node servers by coordinating runs(redis? mysql? websockets?)
+
 ## Instalation
 ```
 npm i tnt-scheduler --save
 ```
+
+## See it working
+[Run it in Runkit](https://npm.runkit.com/tnt-scheduler)
 
 ## Usage:
 
@@ -29,7 +38,7 @@ try {
 }
 ```
 
-Running your job:
+Triggering your job manualy:
 ```javascript
 try {
     sch.startJob('my_job');
@@ -47,7 +56,91 @@ try {
 }
 ```
 
-Full example:
+Scheduling your job at an interval:
+```javascript
+try {
+    sch.scheduleJob('my_job', 1000);
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Scheduling your job at an interval with arguments:
+```javascript
+try {
+    sch.scheduleJob('my_job', 1000, 'arg1', 'arg2', 'argN');
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Canceling a scheduled job:
+```javascript
+try {
+    sch.clearSchedule('my_job');
+} catch (error) {
+    console.log(error.message);
+}
+```
+
+Complete example: Scheduling a job.
+```javascript
+const Scheduler = require('tnt-scheduler');
+let sch = new Scheduler();
+
+// This is only necessary if you are using scheduleJob
+sch.on('error', error => {
+    console.log(error.message);
+});
+
+try {
+    sch.createJob('my_job', myJob);
+} catch (error) {
+    console.log(error.message);
+}
+
+sch.on('running::my_job', promise => {
+    console.log('running my_job');
+    promise.then(resolution=>{
+        console.log('resolved with', resolution);
+    }, error=>{
+        console.log('rejected with', error);
+    })
+});
+
+try {
+    sch.scheduleJob('my_job', 1000, 'arg1', 2, {arg: 3});
+} catch (error) {
+    console.log(error.message);
+}
+
+// myJob is a simple function that returns a promise that randomly 
+//resolves or rejects after 3000 ms
+function myJob(...args) {
+    // returns our promise
+    return new Promise(function (resolve, reject) {
+        // Waits 3 seconds
+        setTimeout(() => {
+            // Roll the dice
+            let odds = Math.round(Math.random());
+            if (odds) {
+                // Resolves if 1;
+                resolve(args);
+            } else {
+                // Rejects if 0
+                reject('Boom!');
+            }
+        }, 3000);
+    })
+}
+
+// Clears the schedule after 10 seconds
+setTimeout(() => {
+    sch.clearSchedule('my_job');
+}, 10000)
+```
+
+Complete example: Triggering a job
 ```javascript
 const Scheduler = require('tnt-scheduler');
 let sch = new Scheduler();
